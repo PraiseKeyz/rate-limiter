@@ -1,19 +1,15 @@
-import { redisClient } from '../utils/redisClient';
+import { memoryStore } from '../utils/memoryStore';
 
-const RATE_LIMIT = 100;
+const RATE_LIMIT = 3;
 const WINDOW_SECONDS = 60;
 
 export const checkRateLimit = async (identifier: string, resource: string) => {
   const key = `rate:${identifier}:${resource}`;
   
-  const count = await redisClient.incr(key);
-
-  if (count === 1) {
-    await redisClient.expire(key, WINDOW_SECONDS);
-  }
+  const count = await memoryStore.increment(key, WINDOW_SECONDS);
 
   if (count > RATE_LIMIT) {
-    const ttl = await redisClient.ttl(key);
+    const ttl = await memoryStore.ttl(key);
     return {
       allowed: false,
       retryAfterSeconds: ttl > 0 ? ttl : WINDOW_SECONDS,
