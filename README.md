@@ -9,6 +9,10 @@ A simple and efficient rate limiting service built with Node.js and TypeScript t
 - Easy-to-use REST API endpoint
 - No external dependencies (like Redis) required
 
+## API Documentation
+
+You can find the API documentation [here](https://documenter.getpostman.com/view/40640896/2sB2ixkE2U#intro).
+
 ## Installation
 
 ```bash
